@@ -25,11 +25,11 @@ window.addEventListener('load', () => {
 			let xml = new XMLHttpRequest();
 
 			xml.open("GET", "https://crossorigin.me/" + url);
-			xml.setRequestHeader('Origin', 'Origin');
+			//xml.setRequestHeader('Origin', 'Origin'); pas obligatoire ? o.O 
 
 			xml.onerror = () => {
 				console.log('Erreur !');
-			};ig
+			};
 
 			xml.onload = () => {
 				if(xml.status === 200) {
