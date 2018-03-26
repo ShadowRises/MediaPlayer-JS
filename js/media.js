@@ -128,10 +128,18 @@ function clearList() {
 function addList(array) {
 	let listeLecture = document.getElementById('liste-lecture');
 	liste = [];
+	let i = 0;
 	array.forEach((item) => {
 		let option = document.createElement('option');
 		liste.push(item);
 		option.textContent = item.querySelector('title').textContent;
+		option.value = i;
 		listeLecture.appendChild(option);
+		option.addEventListener('dblclick', changeMedia);
+		i++;
 	});
+}
+
+function changeMedia() {
+	setMedia(this.value);
 }
