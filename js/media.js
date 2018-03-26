@@ -1,8 +1,7 @@
 "use strict"
 
-// TODO flux RSS video : Faster Than Light - Radio Kawa
-
 let liste = [];
+let currentIndex = 0;
 
 window.addEventListener('load', () => {
 	let video = document.getElementById('video');
@@ -11,15 +10,24 @@ window.addEventListener('load', () => {
 	let previous = document.getElementById('previous');
 	let next = document.getElementById('next');
 	let charger = document.getElementById('charger');
+	let listeLecture = document.getElementById('liste-lecture');
 
+	play.addEventListener('click', () => {
 		if(play.textContent === "Play") {
-			play.addEventListener('click', () => {
 			video.play();
 			play.textContent = "Pause";
 		} else if(play.textContent === "Pause") {
 			video.pause();
 			play.textContent = "Play";
 		}
+	});
+
+	previous.addEventListener('click', () => {
+		setMedia(currentIndex - 1);
+	});
+
+	next.addEventListener('click', () => {
+		setMedia(currentIndex + 1);
 	});
 
 	charger.addEventListener('click', () => {
@@ -38,13 +46,15 @@ window.addEventListener('load', () => {
 				if(xml.status === 200) {
 					let podcast = xml.responseXML;
 					let titre = document.getElementById('titre');
-					let listeLecture = document.getElementById('liste-lecture');
 
 					titre.innerHTML = "<a href=" +
 							podcast.querySelector('channel > link').textContent +
 							">" + podcast.querySelector('channel > title').textContent + "</a>";
 
+					video.poster = podcast.querySelector('channel > image > url').textContent;
+
 					let i = 0;
+					clearList();
 					Array.from(podcast.getElementsByTagName('item')).forEach( (item) => {
 						let option = document.createElement('option');
 						console.log(item);
@@ -55,12 +65,8 @@ window.addEventListener('load', () => {
 						i++;
 					});
 
-					video.src = podcast.querySelector('item > enclosure').attributes.url.value;
-					video.length = podcast.querySelector('item > enclosure').attributes.length.value;
-					video.type = podcast.querySelector('item > enclosure').attributes.type.value;
-					video.autoplay = true;
-					video.preload = "metadata";
-					play.textContent = "Pause";
+					setMedia(currentIndex);
+
 				} else {
 					console.log("Erreur : " + xml.status);
 				}
@@ -69,3 +75,35 @@ window.addEventListener('load', () => {
 		}
 	});
 });
+
+function setMedia(index) {
+	let video = document.getElementById('video');
+	let play = document.getElementById('play');
+
+	if(index < 0) {
+		index = liste.length - 1;
+	} else if(index >= liste.length) {
+		index = 0;
+	}
+
+	video.src = liste[index].querySelector('enclosure').attributes.url.value;
+	video.length = liste[index].querySelector('enclosure').attributes.length.value;
+	video.type = liste[index].querySelector('enclosure').attributes.type.value;
+	video.value = liste[index].value;
+	video.autoplay = true;
+	video.preload = "metadata";
+	play.textContent = "Pause";
+
+	document.getElementById('liste-lecture').children[currentIndex].classList.remove('selected');
+	document.getElementById('liste-lecture').children[index].classList.add('selected');
+	currentIndex = index;
+}
+
+function clearList() {
+	let listeLecture = document.getElementById('liste-lecture');
+
+	liste = [];
+	while(listeLecture.firstChild) {
+		listeLecture.removeChild(listeLecture.firstChild);
+	}
+}
