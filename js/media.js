@@ -12,8 +12,8 @@ window.addEventListener('load', () => {
 	let next = document.getElementById('next');
 	let charger = document.getElementById('charger');
 
-	play.addEventListener('click', () => {
 		if(play.textContent === "Play") {
+			play.addEventListener('click', () => {
 			video.play();
 			play.textContent = "Pause";
 		} else if(play.textContent === "Pause") {
@@ -27,9 +27,8 @@ window.addEventListener('load', () => {
 
 		if(url.length !== 0) {
 			let xml = new XMLHttpRequest();
-
 			xml.open("GET", "https://crossorigin.me/" + url);
-			//xml.setRequestHeader('Origin', 'Origin'); pas obligatoire ? o.O
+			xml.setRequestHeader('Origin', 'http://localhost/');
 
 			xml.onerror = () => {
 				console.log('Erreur !');
