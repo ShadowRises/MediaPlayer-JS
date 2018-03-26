@@ -2,6 +2,7 @@
 
 let liste = [];
 let currentIndex = 0;
+let playing = false;
 
 window.addEventListener('load', () => {
 	let video = document.getElementById('video');
@@ -11,14 +12,39 @@ window.addEventListener('load', () => {
 	let next = document.getElementById('next');
 	let charger = document.getElementById('charger');
 	let listeLecture = document.getElementById('liste-lecture');
+	let progressBar = document.getElementById('progressBar');
+
+	video.addEventListener('timeupdate', () => {
+		if(video.currentTime !== video.duration) {
+			let pourcentage = (100 / video.duration) * video.currentTime;
+			if(isNaN(pourcentage)) {
+				pourcentage = 0;
+			}
+			progressBar.value = pourcentage;
+			progressBar.textContent = pourcentage + "%";
+		} else {
+			setMedia(currentIndex + 1);
+		}
+	});
+
+	progressBar.addEventListener('click', (e) => {
+		let x = e.pageX - progressBar.offsetLeft;
+        let y = e.pageY - progressBar.offsetTop;
+        let clickedValue = x * progressBar.max / progressBar.offsetWidth;
+		video.currentTime = (clickedValue / 100) * video.duration;
+	});
 
 	play.addEventListener('click', () => {
-		if(play.textContent === "Play") {
-			video.play();
-			play.textContent = "Pause";
-		} else if(play.textContent === "Pause") {
-			video.pause();
-			play.textContent = "Play";
+		if(video.duration) {
+			if(!playing) {
+				video.play();
+				play.innerHTML = "&#9646;&#9646;";
+				playing = true;
+			} else if(playing) {
+				video.pause();
+				play.innerHTML = "&#9654;";
+				playing = false;
+			}
 		}
 	});
 
@@ -53,18 +79,8 @@ window.addEventListener('load', () => {
 
 					video.poster = podcast.querySelector('channel > image > url').textContent;
 
-					let i = 0;
 					clearList();
-					Array.from(podcast.getElementsByTagName('item')).forEach( (item) => {
-						let option = document.createElement('option');
-						console.log(item);
-						liste.push(item);
-						option.value = i;
-						option.textContent = item.querySelector('title').textContent;
-						listeLecture.appendChild(option);
-						i++;
-					});
-
+					addList(Array.from(podcast.getElementsByTagName('item')));
 					setMedia(currentIndex);
 
 				} else {
@@ -92,7 +108,8 @@ function setMedia(index) {
 	video.value = liste[index].value;
 	video.autoplay = true;
 	video.preload = "metadata";
-	play.textContent = "Pause";
+	play.innerHTML = "&#9646;&#9646;";
+	playing = true;
 
 	document.getElementById('liste-lecture').children[currentIndex].classList.remove('selected');
 	document.getElementById('liste-lecture').children[index].classList.add('selected');
@@ -106,4 +123,15 @@ function clearList() {
 	while(listeLecture.firstChild) {
 		listeLecture.removeChild(listeLecture.firstChild);
 	}
+}
+
+function addList(array) {
+	let listeLecture = document.getElementById('liste-lecture');
+	liste = [];
+	array.forEach((item) => {
+		let option = document.createElement('option');
+		liste.push(item);
+		option.textContent = item.querySelector('title').textContent;
+		listeLecture.appendChild(option);
+	});
 }
