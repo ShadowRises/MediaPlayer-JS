@@ -1,5 +1,10 @@
 "use strict"
 
+
+//TODO faire suppression du média quand fini de lire
+//TODO revoir les consignes pour le reste
+
+
 let liste = [];
 let currentIndex = 0;
 let playing = false;
