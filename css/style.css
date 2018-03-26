@@ -1,4 +1,4 @@
-body {
+html * {
 	font-family: sans-serif;
 }
 
@@ -9,16 +9,18 @@ select {
 
 video {
 	background-color: #000;
-	width: 50em;
-	height: 30em;
-	object-fit: fill;
+	object-fit: fit;
 }
 
 progress {
-	width: 50em;
+	width: 800px;
 	height: 2em;
 }
 
 .selected {
 	background-color: green;
+}
+
+.media-player {
+	text-align: center;
 }

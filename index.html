@@ -7,21 +7,29 @@
 	</head>
 	<body>
 		<h1>MediaPlayer</h1>
-		<h2 id="titre"></h2>
-		<video id="video">
-		</video>
-		<progress id="progressBar" value="0" max="100">0%</progress>
-		<br />
-		<button type="button" id="previous">&ll;</button>
-		<button type="button" id="play">&#9654;</button>
-		<button type="button" id="next">&gg;</button>
-		<br />
-		<select class="liste-lecture" id="liste-lecture" size=5 multiple>
-		</select>
-		<br />
-		<input type="url" name="url" id="url" placeholder="URL">
-			<button type="button" name="button" id="charger">Charger l'URL</button>
-		</input>
+		<div class="media-player">
+			<h2 id="titre"></h2>
+			<div class="video">
+				<video id="video" width="800" height="450"></video>
+				<div class="progress-bar">
+					<progress id="progressBar" value="0" max="100">0%</progress>
+				</div>
+			</div>
+			<div class="boutons">
+				<button type="button" id="previous">&ll;</button>
+				<button type="button" id="play">&#9654;</button>
+				<button type="button" id="next">&gg;</button>
+			</div>
+			<div class="liste-lecture">
+				<select class="liste-lecture" id="liste-lecture" size=5 multiple></select>
+				<div class="">
+					<input type="url" name="url" id="url" placeholder="URL">
+						<button type="button" name="button" id="charger">Charger l'URL</button>
+					</input>
+				</div>
+			</div>
+
+		</div>
 		<script src="js/media.js" charset="utf-8"></script>
 	</body>
 </html>

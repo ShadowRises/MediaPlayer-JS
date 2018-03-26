@@ -73,7 +73,7 @@ window.addEventListener('load', () => {
 					let podcast = xml.responseXML;
 					let titre = document.getElementById('titre');
 
-					titre.innerHTML = "<a href=" +
+					titre.innerHTML = "<a target=\"_blank\" href=" +
 							podcast.querySelector('channel > link').textContent +
 							">" + podcast.querySelector('channel > title').textContent + "</a>";
 
