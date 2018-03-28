@@ -17,6 +17,10 @@ progress {
 	height: 2em;
 }
 
+div {
+	margin-top: 0.5em;
+}
+
 .selected {
 	background-color: green;
 }
