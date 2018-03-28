@@ -1,7 +1,6 @@
 "use strict"
 
 
-//TODO faire suppression du média quand fini de lire
 //TODO revoir les consignes pour le reste
 
 
@@ -18,6 +17,9 @@ window.addEventListener('load', () => {
 	let charger = document.getElementById('charger');
 	let listeLecture = document.getElementById('liste-lecture');
 	let progressBar = document.getElementById('progressBar');
+	let supprimer = document.getElementById('supprimer');
+	let up = document.getElementById('up');
+	let down = document.getElementById('down');
 
 	video.addEventListener('timeupdate', () => {
 		if(video.currentTime !== video.duration) {
@@ -28,13 +30,12 @@ window.addEventListener('load', () => {
 			progressBar.value = pourcentage;
 			progressBar.textContent = pourcentage + "%";
 		} else {
-			setMedia(currentIndex + 1);
+			setMedia(currentIndex + 1, true);
 		}
 	});
 
 	progressBar.addEventListener('click', (e) => {
 		let x = e.pageX - progressBar.offsetLeft;
-        let y = e.pageY - progressBar.offsetTop;
         let clickedValue = x * progressBar.max / progressBar.offsetWidth;
 		video.currentTime = (clickedValue / 100) * video.duration;
 	});
@@ -78,6 +79,13 @@ window.addEventListener('load', () => {
 					let podcast = xml.responseXML;
 					let titre = document.getElementById('titre');
 
+					if(titre === null) {
+						titre = document.createElement('h2');
+						titre.id = "titre";
+
+						document.getElementById('media-player').insertBefore(titre, document.getElementById('video-div'));
+					}
+
 					titre.innerHTML = "<a target=\"_blank\" href=" +
 							podcast.querySelector('channel > link').textContent +
 							">" + podcast.querySelector('channel > title').textContent + "</a>";
@@ -97,7 +105,7 @@ window.addEventListener('load', () => {
 	});
 });
 
-function setMedia(index) {
+function setMedia(index, del) {
 	let video = document.getElementById('video');
 	let play = document.getElementById('play');
 
@@ -118,7 +126,12 @@ function setMedia(index) {
 
 	document.getElementById('liste-lecture').children[currentIndex].classList.remove('selected');
 	document.getElementById('liste-lecture').children[index].classList.add('selected');
-	currentIndex = index;
+	if(del === true) {
+		liste.splice(currentIndex, 1);
+		document.getElementById('liste-lecture').children[currentIndex].remove();
+	} else {
+		currentIndex = index;
+	}
 }
 
 function clearList() {
@@ -140,11 +153,9 @@ function addList(array) {
 		option.textContent = item.querySelector('title').textContent;
 		option.value = i;
 		listeLecture.appendChild(option);
-		option.addEventListener('dblclick', changeMedia);
+		option.addEventListener('dblclick', () => {
+			setMedia(liste.indexOf(option));
+		});
 		i++;
 	});
-}
-
-function changeMedia() {
-	setMedia(this.value);
 }

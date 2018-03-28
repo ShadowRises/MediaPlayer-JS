@@ -7,9 +7,8 @@
 	</head>
 	<body>
 		<h1>MediaPlayer</h1>
-		<div class="media-player">
-			<h2 id="titre"></h2>
-			<div class="video">
+		<div class="media-player" id="media-player">
+			<div class="video" id="video-div">
 				<video id="video" width="800" height="450"></video>
 				<div class="progress-bar">
 					<progress id="progressBar" value="0" max="100">0%</progress>
@@ -22,14 +21,17 @@
 			</div>
 			<div class="liste-lecture">
 				<select class="liste-lecture" id="liste-lecture" size=5 multiple></select>
+				<div id="gestion-playlist">
+					<button type="button" name="button" id="supprimer">Supprimer</button>
+					<button type="button" name="button" id="up">&#8593;</button>
+					<button type="button" name="button" id="down">&#8595;</button>
+				</div>
 				<div class="">
-					<input type="url" name="url" id="url" placeholder="URL">
-						<button type="button" name="button" id="charger">Charger l'URL</button>
-					</input>
+					<input type="url" name="url" id="url" placeholder="URL" />
+					<button type="button" name="button" id="charger">Charger l'URL</button>
 				</div>
 			</div>
-
 		</div>
-		<script src="js/media.js" charset="utf-8"></script>
+		<script src="js/media.js"></script>
 	</body>
 </html>
