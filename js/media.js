@@ -1,5 +1,6 @@
 // jshint esversion: 6
 
+//TODO boutons up et down
 //TODO revoir les consignes pour le reste
 
 
@@ -59,6 +60,30 @@ window.addEventListener('load', () => {
 
 	next.addEventListener('click', () => {
 		setMedia(currentIndex + 1);
+	});
+
+	supprimer.addEventListener('click', () => {
+		let mediaList = Array.from(listeLecture.children);
+		mediaList.forEach((media) => {
+			if(media.selected === true) {
+				let i = mediaList.indexOf(media);
+				console.log(i);
+				if(playing) {
+					setMedia(i + 1, true);
+				} else {
+					liste.splice(i, 1);
+					listeLecture.children[i].remove();
+				}
+			}
+		});
+	});
+
+	up.addEventListener('click', () => {
+
+	});
+
+	down.addEventListener('click', () => {
+
 	});
 
 	charger.addEventListener('click', () => {
@@ -134,8 +159,7 @@ function setMedia(index, del) {
 }
 
 function clearList() {
-	let listeLecture = document.getElementById('liste-lecture');
-
+	listeLecture = document.getElementById('liste-lecture');
 	liste = [];
 	while(listeLecture.firstChild) {
 		listeLecture.removeChild(listeLecture.firstChild);
@@ -143,9 +167,8 @@ function clearList() {
 }
 
 function addList(array) {
-	let listeLecture = document.getElementById('liste-lecture');
-	liste = [];
 	let i = 0;
+	clearList();
 	array.forEach((item) => {
 		let option = document.createElement('option');
 		liste.push(item);
