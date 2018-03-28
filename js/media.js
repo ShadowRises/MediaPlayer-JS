@@ -40,19 +40,7 @@ window.addEventListener('load', () => {
 		video.currentTime = (clickedValue / 100) * video.duration;
 	});
 
-	play.addEventListener('click', () => {
-		if(video.duration) {
-			if(!playing) {
-				video.play();
-				play.innerHTML = "&#9646;&#9646;";
-				playing = true;
-			} else if(playing) {
-				video.pause();
-				play.innerHTML = "&#9654;";
-				playing = false;
-			}
-		}
-	});
+	play.addEventListener('click', playPause);
 
 	previous.addEventListener('click', () => {
 		setMedia(currentIndex - 1);
@@ -67,8 +55,7 @@ window.addEventListener('load', () => {
 		mediaList.forEach((media) => {
 			if(media.selected === true) {
 				let i = mediaList.indexOf(media);
-				console.log(i);
-				if(playing) {
+				if(media.classList.contains('selected')) {
 					setMedia(i + 1, true);
 				} else {
 					liste.splice(i, 1);
@@ -133,34 +120,48 @@ function setMedia(index, del) {
 	let video = document.getElementById('video');
 	let play = document.getElementById('play');
 
-	if(index < 0) {
-		index = liste.length - 1;
-	} else if(index >= liste.length) {
-		index = 0;
-	}
+	if(liste.length > 1) {
+		if(index < 0) {
+			index = liste.length - 1;
+		} else if(index >= liste.length) {
+			index = 0;
+		}
+		if(currentIndex >= liste.length) {
+			currentIndex = 0;
+		}
 
-	video.src = liste[index].querySelector('enclosure').attributes.url.value;
-	video.length = liste[index].querySelector('enclosure').attributes.length.value;
-	video.type = liste[index].querySelector('enclosure').attributes.type.value;
-	video.value = liste[index].value;
-	video.autoplay = true;
-	video.preload = "metadata";
-	play.innerHTML = "&#9646;&#9646;";
-	playing = true;
+		video.src = liste[index].querySelector('enclosure').attributes.url.value;
+		video.length = liste[index].querySelector('enclosure').attributes.length.value;
+		video.type = liste[index].querySelector('enclosure').attributes.type.value;
+		video.value = liste[index].value;
+		video.autoplay = true;
+		video.preload = "metadata";
+		play.innerHTML = "&#9646;&#9646;";
+		playing = true;
 
-	document.getElementById('liste-lecture').children[currentIndex].classList.remove('selected');
-	document.getElementById('liste-lecture').children[index].classList.add('selected');
-	if(del === true) {
-		liste.splice(currentIndex, 1);
-		document.getElementById('liste-lecture').children[currentIndex].remove();
+		listeLecture.children[currentIndex].classList.remove('selected');
+		listeLecture.children[index].classList.add('selected');
+		if(del === true) {
+			liste.splice(currentIndex, 1);
+			listeLecture.children[currentIndex].remove();
+		} else {
+			currentIndex = index;
+		}
 	} else {
-		currentIndex = index;
+		clearList();
+		playPause();
+		video.src = null;
+		video.poster = null;
+		video.preload = null;
+		video.type = null;
+		video.autoplay = null;
 	}
 }
 
 function clearList() {
+	currentIndex = 0;
 	listeLecture = document.getElementById('liste-lecture');
-	liste = [];
+	liste.length = 0;
 	while(listeLecture.firstChild) {
 		listeLecture.removeChild(listeLecture.firstChild);
 	}
@@ -176,8 +177,22 @@ function addList(array) {
 		option.value = i;
 		listeLecture.appendChild(option);
 		option.addEventListener('dblclick', () => {
-			setMedia(liste.indexOf(option));
+			setMedia(Array.from(listeLecture).indexOf(option));
 		});
 		i++;
 	});
 }
+
+function playPause() {
+	if(video.duration) {
+		if(!playing) {
+			video.play();
+			play.innerHTML = "&#9646;&#9646;";
+			playing = true;
+		} else if(playing) {
+			video.pause();
+			play.innerHTML = "&#9654;";
+			playing = false;
+		}
+	}
+};
