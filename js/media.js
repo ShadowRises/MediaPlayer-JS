@@ -1,5 +1,4 @@
-"use strict"
-
+// jshint esversion: 6
 
 //TODO revoir les consignes pour le reste
 
