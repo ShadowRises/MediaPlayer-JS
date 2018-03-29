@@ -1,9 +1,11 @@
 // jshint esversion: 6
 
+//TODO faire le fullscreen
 
 let liste = [];
 let currentIndex = 0;
 let playing = false;
+let isFullScreen = false;
 
 window.addEventListener('load', () => {
 	let video = document.getElementById('video');
@@ -11,6 +13,7 @@ window.addEventListener('load', () => {
 	let play = document.getElementById('play');
 	let previous = document.getElementById('previous');
 	let next = document.getElementById('next');
+	let fullscreen = document.getElementById('fullscreen');
 	let charger = document.getElementById('charger');
 	let listeLecture = document.getElementById('liste-lecture');
 	let progressBar = document.getElementById('progressBar');
@@ -47,6 +50,30 @@ window.addEventListener('load', () => {
 	next.addEventListener('click', () => {
 		setMedia(currentIndex + 1);
 	});
+
+	fullscreen.addEventListener('click', () => {
+		if(video.requestFullScreen) {
+			video.requestFullScreen();
+		} else if(video.mozRequestFullScreen) {
+			video.mozRequestFullScreen();
+		} else if(video.webkitRequestFullScreen) {
+			video.webkitRequestFullScreen();
+		} else if(video.msRequestFullScreen) {
+			video.msRequestFullScreen();
+		}
+		isFullScreen = true;
+	});
+
+	document.addEventListener('keydown', (e) => {
+		if(isFullScreen && e.keyCode === 32) {
+			playPause();
+		}
+	});
+
+	document.addEventListener('fullscreenchange', exitFullScreenEvent);
+	document.addEventListener('mozfullscreenchange', exitFullScreenEvent);
+	document.addEventListener('webkitfullscreenchange', exitFullScreenEvent);
+	document.addEventListener('msfullscreenchange', exitFullScreenEvent);
 
 	up.addEventListener('click', () => {
 		let mediaList = Array.from(listeLecture.children);
@@ -243,4 +270,8 @@ function playPause() {
 			playing = false;
 		}
 	}
+}
+
+function exitFullScreenEvent() {
+	isFullScreen = false;
 }

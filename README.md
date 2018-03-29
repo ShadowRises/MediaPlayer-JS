@@ -3,7 +3,7 @@
 Ceci est un lecteur multimédia réalisé dans le cadre du projet final du cours JavaScript à l'IUT.
 
 -------------------------------------
-  
+
 Il est possible de :
 * charger un flux RSS en renseignant son URL
 * mettre en pause le média, ainsi que de le relancer
@@ -13,3 +13,5 @@ Il est possible de :
 * monter un/plusieurs média(s) sélectionné(s) dans la liste de liste de lecture
 * descendre un/plusieurs média(s) sélectionné(s) dans la liste de lecture
 * vider la liste de lecture
+* mettre le média en plein écran
+* mettre le média en pause avec la touche *`Espace`* lorsque le média est en plein écran
