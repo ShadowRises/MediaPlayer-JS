@@ -1,7 +1,5 @@
 // jshint esversion: 6
 
-//TODO revoir les consignes pour le reste
-
 
 let liste = [];
 let currentIndex = 0;
@@ -100,7 +98,6 @@ window.addEventListener('load', () => {
 					setMedia(i + 1, true);
 				} else {
 					liste.splice(i, 1);
-					console.log(listeLecture.children[i]);
 					listeLecture.children[i].remove();
 				}
 			}
@@ -153,6 +150,7 @@ window.addEventListener('load', () => {
 function setMedia(index, del) {
 	let video = document.getElementById('video');
 	let play = document.getElementById('play');
+	let listeLecture = document.getElementById('liste-lecture');
 
 	if(liste.length > 1) {
 		if(index < 0) {
@@ -187,8 +185,10 @@ function setMedia(index, del) {
 }
 
 function clearList() {
+	let listeLecture = document.getElementById('liste-lecture');
+	let video = document.getElementById('video');
+
 	currentIndex = 0;
-	listeLecture = document.getElementById('liste-lecture');
 	liste.length = 0;
 	while(listeLecture.firstChild) {
 		listeLecture.removeChild(listeLecture.firstChild);
@@ -204,8 +204,10 @@ function clearList() {
 }
 
 function addList(array) {
+	let listeLecture = document.getElementById('liste-lecture');
+
 	let i = liste.length;
-	let test = false;;
+	let test = false;
 	if(i === 0) {
 		test = true;
 	}
@@ -227,6 +229,9 @@ function addList(array) {
 }
 
 function playPause() {
+	let video = document.getElementById('video');
+	let play = document.getElementById('play');
+
 	if(video.duration) {
 		if(!playing) {
 			video.play();
