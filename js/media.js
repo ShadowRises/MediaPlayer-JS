@@ -94,17 +94,17 @@ window.addEventListener('load', () => {
 
 	supprimer.addEventListener('click', () => {
 		let mediaList = Array.from(listeLecture.children);
-		mediaList.forEach((media) => {
-			if(media.selected === true) {
-				let i = mediaList.indexOf(media);
-				if(media.classList.contains('selected')) {
+		for(let i = (mediaList.length - 1); i >= 0; i--){
+			if(mediaList[i].selected === true) {
+				if(mediaList[i].classList.contains('selected')) {
 					setMedia(i + 1, true);
 				} else {
 					liste.splice(i, 1);
+					console.log(listeLecture.children[i]);
 					listeLecture.children[i].remove();
 				}
 			}
-		});
+		}
 	});
 
 	vider.addEventListener('click', clearList);
@@ -139,9 +139,7 @@ window.addEventListener('load', () => {
 
 					video.poster = podcast.querySelector('channel > image > url').textContent;
 
-					//clearList();
 					addList(Array.from(podcast.getElementsByTagName('item')));
-					setMedia(currentIndex);
 
 				} else {
 					console.log("Erreur : " + xml.status);
@@ -207,6 +205,10 @@ function clearList() {
 
 function addList(array) {
 	let i = liste.length;
+	let test = false;;
+	if(i === 0) {
+		test = true;
+	}
 	listeLecture = document.getElementById('liste-lecture');
 	array.forEach((item) => {
 		let option = document.createElement('option');
@@ -219,6 +221,9 @@ function addList(array) {
 		});
 		i++;
 	});
+	if(test) {
+		setMedia(0);
+	}
 }
 
 function playPause() {
