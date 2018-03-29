@@ -86,7 +86,25 @@ window.addEventListener('load', () => {
 	});
 
 	down.addEventListener('click', () => {
+		let mediaList = Array.from(listeLecture.children);
+		mediaList.forEach((media) => {
+			if(media.selected === true) {
+				let i = mediaList.indexOf(media);
+				if(i !== liste.length - 1 && !mediaList[i + 1].selected) {
+					let temp = liste[i + 1];
+					liste[i + 1] = liste[i];
+					liste[i] = temp;
 
+					listeLecture.children[i + 1].after(listeLecture.children[i]);
+
+					if(currentIndex === i + 1) {
+						currentIndex--;
+					} else if(currentIndex === i){
+						currentIndex++;
+					}
+				}
+			}
+		});
 	});
 
 	charger.addEventListener('click', () => {
